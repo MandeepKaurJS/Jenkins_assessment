@@ -82,14 +82,18 @@ kubeconfig content from Kubenertes cluster
 # There is some example scripts to defining the stages in jenkins
 # I created declarative pipeline in order to acheive my goal
 1. stage first checkout to github repo which contains dockerfile as well as jenkinsfile
-```checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://github']]]) ```
-2. To get the git_commit-sha and git_tag I used this script
-``` script {
-                        GIT_COMMIT = sh (script: "git log -n 1 --pretty=format:'%h'", returnStdout: true).trim()
-                        def GIT_SHORT_SHA=GIT_COMMIT.take(8)
-                        TAG_NAME= sh(script: "git tag --contains | head -1" , returnStdout: true).trim()
-                    } ```
-3. stage two with steps according to build conditions
+
+``` checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://github']]]) ```
+
+2. To get the git_commit-sha and git_tag I used this script.
+
+  ```   script {
+         GIT_COMMIT = sh (script: "git log -n 1 --pretty=format:'%h'", returnStdout: true).trim()
+          def GIT_SHORT_SHA=GIT_COMMIT.take(8)
+          TAG_NAME= sh(script: "git tag --contains | head -1" , returnStdout: true).trim()
+          } ```
+3. stage two with steps according to build conditions.
+
 ``` stage('Building image') {
       steps{
         script {
