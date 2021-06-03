@@ -81,7 +81,7 @@ kubeconfig content from Kubenertes cluster
 - When everything is setup create your first pipeline by login to jenkins server->new-job->pipeline->git-scm->Save->Apply
 # There is some example scripts to defining the stages in jenkins
 # I created declarative pipeline in order to acheive my deployment on EKS
-- We to define our pipeline sysntax first and define ENV var if we want to use tham in Pipeline
+- Our pipeline sysntax look like below script and I am defining ENV var to use tham in Pipeline
 ```
 def dockerImage
 def GIT_COMMIT =null
