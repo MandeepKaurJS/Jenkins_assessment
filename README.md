@@ -83,7 +83,8 @@ kubeconfig content from Kubenertes cluster
 # I created declarative pipeline in order to acheive my goal
 1. stage first checkout to github repo which contains dockerfile as well as jenkinsfile.
 
-``` checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://github']]]) ```
+``` checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://github']]])
+```
 
 2. To get the git_commit-sha and git_tag I used this script.
 ```
@@ -115,7 +116,8 @@ script {
                 
 5. Deploy container to EKS using this script in deploy stages with required conditions.
 
-``` sh "kubectl apply -f deployment.yml" ```
+``` sh "kubectl apply -f deployment.yml" 
+```
 
 # End
 
