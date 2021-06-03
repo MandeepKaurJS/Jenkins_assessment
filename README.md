@@ -84,13 +84,13 @@ kubeconfig content from Kubenertes cluster
 1. stage first checkout to github repo which contains dockerfile as well as jenkinsfile
 ```checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://github']]]) ```
 2. To get the git_commit-sha and git_tag I used this script
-```script {
+``` script {
                         GIT_COMMIT = sh (script: "git log -n 1 --pretty=format:'%h'", returnStdout: true).trim()
                         def GIT_SHORT_SHA=GIT_COMMIT.take(8)
                         TAG_NAME= sh(script: "git tag --contains | head -1" , returnStdout: true).trim()
-                    }```
+                    } ```
 3. stage two with steps according to build conditions
-```stage('Building image') {
+``` stage('Building image') {
       steps{
         script {
             if( TAG_NAME == null){
@@ -103,7 +103,7 @@ kubeconfig content from Kubenertes cluster
       }
     } ```
 4. Push the build images to ECR:
-```sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin acont_id.dkr.ecr.us-east-1.amazonaws.com'
+``` sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin acont_id.dkr.ecr.us-east-1.amazonaws.com'
                 sh "docker push aws_acnt_id.dkr.ecr.us-east-1.amazonaws.com/nodeapp:urtagname" ```
                
 5. Deploy container to EKS using this script in deploy stages with required conditions
