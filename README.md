@@ -46,7 +46,7 @@ sudo service docker start
 
 - I logged to AWS ECR using CLI and you will get message with Succeeded value:
 ``` aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin your_acct_id.dkr.ecr.us-east-2.amazonaws.com```
-#EKS Integration with Jenkins
+# EKS Integration with Jenkins
 - we need to instaal kubectl in order to communicate with cluster as well as need to create cluster by installing eksctl on our Server and run this Command to create the cluster:
 ```eksctl create cluster --name demo-eks --region us-east-2 --nodegroup-name my-nodes --node-type t3.small --managed```
 - Check if our cluster is created and we can query to cluster using this command
@@ -80,7 +80,7 @@ kubeconfig content from Kubenertes cluster
 #Build you pipeline using jenkinsfile
 - When everything is setup create your first pipeline by login to jenkins server->new-job->pipeline->git-scm->Save->Apply
 # There is some example scripts to defining the stages in jenkins
-#I created declarative pipeline in order to acheive my goal
+# I created declarative pipeline in order to acheive my goal
 1. stage first checkout to github repo which contains dockerfile as well as jenkinsfile
 ```checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://github']]]) ```
 2. To get the git_commit-sha and git_tag I used this script
