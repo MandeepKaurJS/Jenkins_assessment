@@ -31,7 +31,7 @@ sudo service docker start
 5. Repo created in ECR,[Click](https://docs.aws.amazon.com/AmazonECR/latest/userguide/repository-create.html) here to know how to do that.
 6. port 8096 is opened up in firewall rules. 
 7. Create an IAM role with AmazonEC2ContainerRegistryFullAccess policy, attach to Jenkins EC2 instance
-#How to setup Elastic Container Registry (ECR) for Docker on AWS | How to Create a Repo in ECR for Hosting Docker images | How to Push Docker image into Amazon ECR
+# How to setup Elastic Container Registry (ECR) for Docker on AWS | How to Create a Repo in ECR for Hosting Docker images | How to Push Docker image into Amazon ECR
 - I assigned the role AmazonEC2ContainerRegistryFullAccess to EC2 instance which have installed docker.
 
 - Go to AWS console, click on EC2, select EC2 instance, Go to Actions --> Security--> Modify IAM role.
