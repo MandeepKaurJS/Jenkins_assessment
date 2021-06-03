@@ -60,7 +60,7 @@ execute the below command to get kubeconfig info, copy the entire content of the
 Configuration ( Kubeconfig) -> Select enter directly radio button -> copy
 kubeconfig content from Kubenertes cluster
 - AnotherWay by creating .Kube folder inside jenkins server and copy the .kube/config configuration to jenkins and we can directly use kubectl commands in our jenkins server.
-  Like That:
+- Like That:
   ```   stage('Deploy'){
          /*write steps here to deploy it to EKS cluster with git-sha tag name*/
             when{
@@ -81,6 +81,34 @@ kubeconfig content from Kubenertes cluster
 - When everything is setup create your first pipeline by login to jenkins server->new-job->pipeline->git-scm->Save->Apply
 # There is some example scripts to defining the stages in jenkins
 # I created declarative pipeline in order to acheive my deployment on EKS
+- We to define our pipeline sysntax first and define ENV var if we want to use tham in Pipeline
+```
+def dockerImage
+def GIT_COMMIT =null
+def TAG_NAME=null
+pipeline {
+    agent any
+    environment {
+        registry = "aws_acnt_ID.dkr.ecr.us-east-1.amazonaws.com/nodeapp"
+    }
+    //added choice of parameter to deploy the app on specific Branch
+     parameters {
+        choice(
+            name: 'Git_BRANCH',
+            choices: ['DEV', 'STAGING', 'UAT', 'PROD'],
+            description: 'Passing the Environment')
+       }
+       Stages{
+       stage("any stage"){
+       steps{
+       //write your required implementation here
+       }
+       }
+       
+       }
+   }
+   
+   ```
 1. stage first checkout to github repo which contains dockerfile as well as jenkinsfile.
 
 ``` 
