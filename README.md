@@ -77,13 +77,14 @@ kubeconfig content from Kubenertes cluster
     }```
 
 
-#Build you pipeline using jenkinsfile
+# Build your pipeline using jenkinsfile
 - When everything is setup create your first pipeline by login to jenkins server->new-job->pipeline->git-scm->Save->Apply
 # There is some example scripts to defining the stages in jenkins
-# I created declarative pipeline in order to acheive my goal
+# I created declarative pipeline in order to acheive my deployment on EKS
 1. stage first checkout to github repo which contains dockerfile as well as jenkinsfile.
 
-``` checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://github']]])
+``` 
+checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://github']]])
 ```
 
 2. To get the git_commit-sha and git_tag I used this script.
@@ -110,13 +111,15 @@ script {
  ```
 4. Push the build images to ECR:
 
-``` sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin acont_id.dkr.ecr.us-east-1.amazonaws.com'
-                sh "docker push aws_acnt_id.dkr.ecr.us-east-1.amazonaws.com/nodeapp:urtagname" 
+``` 
+sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin acont_id.dkr.ecr.us-east-1.amazonaws.com'
+ sh "docker push aws_acnt_id.dkr.ecr.us-east-1.amazonaws.com/nodeapp:urtagname" 
 ```
                 
 5. Deploy container to EKS using this script in deploy stages with required conditions.
 
-``` sh "kubectl apply -f deployment.yml" 
+``` 
+sh "kubectl apply -f deployment.yml" 
 ```
 
 # End
