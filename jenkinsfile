@@ -1,0 +1,90 @@
+def dockerImage
+def GIT_COMMIT =null
+def TAG_NAME=null
+pipeline {
+    agent any
+    environment {
+        registry = "aws_acnt_ID.dkr.ecr.us-east-1.amazonaws.com/nodeapp"
+    }
+    //added choice of parameter to deploy the app on specific Branch
+     parameters {
+        choice(
+            name: 'Git_BRANCH',
+            choices: ['DEV', 'STAGING', 'UAT', 'PROD'],
+            description: 'Passing the Environment'
+    )
+  }
+   
+    stages {
+        //cloning git repo with dockerfile and jenkinfile, by assumeing there is a dockerfile
+        stage('Cloning Git') {
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://github']]])
+                    // another approach to get the git short sha using --short head command.comment off the below and comment the gitcommit to acheive this
+                    //GIT_COMMIT = sh (script: "git rev-parse --short=8 HEAD", returnStdout: true).trim()
+                    script {
+                        GIT_COMMIT = sh (script: "git log -n 1 --pretty=format:'%h'", returnStdout: true).trim()
+                        def GIT_SHORT_SHA=GIT_COMMIT.take(8)
+                        TAG_NAME= sh(script: "git tag --contains | head -1" , returnStdout: true).trim()
+                    }
+            }
+        }
+  
+    // Building Docker images
+    stage('Building image') {
+      steps{
+        script {
+            if( TAG_NAME == null){
+                dockerImage = docker.build("$registry"+":${GIT_SHORT_SHA}"
+            }else{
+                dockerImage = docker.build("$registry"+":${TAG_NAME}"
+            }
+            
+        }
+      }
+    }
+   
+    // Uploading Docker images into AWS ECR
+
+ 
+    stage('Pushing to ECR') {
+     steps{ 
+         script{
+         if(TAG_NAME !=null){
+              
+                sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin acont_id.dkr.ecr.us-east-1.amazonaws.com'
+                sh "docker push account_Id.dkr.ecr.us-east-1.amazonaws.com/nodeapp:${TAG_NAME}"
+                //we have to login to that region too in order to create a replica of same image
+                sh 'aws ecr get-login-password --region us-west-1 | docker login --username AWS --password-stdin Awsaccount_id.dkr.ecr.us-west-1.amazonaws.com'
+                //in order to create replica we can simply use pull command to get the image on specific region using pull command
+                sh "docker pull 170278393714.dkr.ecr.us-east-1.amazonaws.com/nodeapp:${TAG_NAME}"
+                //or we can simply push that image to replicated region using push as well
+                //sh "docker push account_Id.dkr.ecr.us-east-1.amazonaws.com/nodeapp:${TAG_NAME}"
+         }
+         else{
+                sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin acont_id.dkr.ecr.us-east-1.amazonaws.com'
+                sh "docker push aws_acnt_id.dkr.ecr.us-east-1.amazonaws.com/nodeapp:${GIT_SHORT_SHA}"
+            
+            }
+         }
+        
+         }
+        }
+      
+    }
+    
+    stage('Deploy'){
+         /*write steps here to deploy it to EKS cluster with git-sha tag name*/
+            when{
+                   allOf{
+                       expression { params.Git_BRANCH == DEV|STAGING|UAT} 
+                       expression { GIT_SHORT_SHA != null}
+                }
+            steps{
+               
+                sh "kubectl apply -f deployment.yml"
+            }
+        }
+   
+    }
+}
