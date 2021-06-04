@@ -1,6 +1,7 @@
 # Jenkins_assessment
-The leading open source automation server, Jenkins provides hundreds of plugins to support building, deploying and automating any project.
-#What we will do in this assignment
+
+Jenkins : Jenkins is leading open source automation server, Jenkins provides hundreds of plugins to support building, deploying and automating any project.
+# What we will do in this assignment
 - Automating builds
 - Automating Docker image builds
 - Automating Docker image upload into AWS ECR
