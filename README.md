@@ -1,7 +1,7 @@
 # Jenkins_assessment
 
 Jenkins : Jenkins is leading open source automation server, Jenkins provides hundreds of plugins to support building, deploying and automating any project.
-## I assume their is a dockerfile and EKS cluster created already. But, I explained the whole process how we can configure the EKS cluster with jenkins and assuming there is deployment.yml for deployment from ECR to EKS
+## I assume there is a dockerfile and EKS cluster created already. But I explained the whole process as to how we can configure the EKS cluster with jenkins and assuming there is deployment.yml for deployment from ECR to EKS.
 # What we will do in this assignment
 - Automating builds
 - Automating Docker image builds
@@ -10,20 +10,20 @@ Jenkins : Jenkins is leading open source automation server, Jenkins provides hun
 # Prerequisites
 To follow this tutorial you will need:
 
-1. Jenkins is up and running
+1. Jenkins - up and running
 2. Docker installed on Jenkins instance.For integrating Docker and Jenkins
 3. Steps:
 ```
-Add jenkins user to Docker group
-sudo usermod -a -G docker jenkins
+- Add jenkins user to Docker group
+  sudo usermod -a -G docker jenkins
 
-Restart Jenkins service
+- Restart Jenkins service
 sudo service jenkins restart
 
-Reload system daemon files
+- Reload system daemon files
 sudo systemctl daemon-reload
 
-Restart Docker service as well
+- Restart Docker service as well
 
 sudo service docker stop
 sudo service docker start 
@@ -49,7 +49,7 @@ sudo service docker start
 - I logged to AWS ECR using CLI and you will get message with Succeeded value:
 ``` aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin your_acct_id.dkr.ecr.us-east-2.amazonaws.com```
 # EKS Integration with Jenkins
-- we need to instaal kubectl in order to communicate with cluster as well as need to create cluster by installing eksctl on our Server and run this Command to create the cluster:
+- we need to install kubectl in order to communicate with cluster as well as need to create cluster by installing eksctl on our Server and run this Command to create the cluster:
 ```eksctl create cluster --name demo-eks --region us-east-2 --nodegroup-name my-nodes --node-type t3.small --managed```
 - Check if our cluster is created and we can query to cluster using this command
 ``` kubectl get nodes```
@@ -81,7 +81,6 @@ kubeconfig content from Kubenertes cluster
 
 # Build your pipeline using jenkinsfile
 - When everything is setup create your first pipeline by login to jenkins server->new-job->pipeline->git-scm->Save->Apply
-# There is some example scripts to defining the stages in jenkins
 # I created declarative pipeline in order to acheive my deployment on EKS
 - Our pipeline sysntax look like below script and I am defining ENV var to use tham in Pipeline
 ```
@@ -111,6 +110,8 @@ pipeline {
    }
    
    ```
+# There are some example scripts to defining the stages in jenkins
+
 1. stage first checkout to github repo which contains dockerfile as well as jenkinsfile.
 
 ``` 
