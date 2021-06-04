@@ -34,10 +34,10 @@ pipeline {
     stage('Building image') {
       steps{
         script {
-            if( TAG_NAME == null){
-                dockerImage = docker.build("$registry"+":${GIT_SHORT_SHA}"
-            }else{
+            if( TAG_NAME != null){
                 dockerImage = docker.build("$registry"+":${TAG_NAME}"
+            }else{
+                dockerImage = docker.build("$registry"+":${GIT_SHORT_SHA}"
             }
             
         }
