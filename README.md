@@ -1,8 +1,8 @@
 # Jenkins_assessment
 
 Jenkins : Jenkins is leading open source automation server, Jenkins provides hundreds of plugins to support building, deploying and automating any project.
-###### I assume their is a dockerfile and EKS cluster created already. But, I explained the whole process how we can configure the EKS cluster with jenkins
-###### and assuming there is deployment.yml for deployment from ECR to EKS
+## I assume their is a dockerfile and EKS cluster created already. But, I explained the whole process how we can configure the EKS cluster with jenkins
+## and assuming there is deployment.yml for deployment from ECR to EKS
 # What we will do in this assignment
 - Automating builds
 - Automating Docker image builds
